@@ -1,0 +1,21 @@
+nav {
+  $large-size-icon: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  gap: 2rem;
+  & a {
+    color: black;
+  }
+  & a:first-child {
+    margin-right: auto;
+  }
+  & a.active {
+    color: var(--accent-color);
+  }
+}
+
+.avatar {
+  color: var(--gray-700);
+}

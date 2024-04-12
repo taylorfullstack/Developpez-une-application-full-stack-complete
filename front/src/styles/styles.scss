@@ -1,4 +1,202 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@use '@angular/material' as mat;
+
+$my-primary-palette: (
+  50: #ece9f6,
+  100: #cfc8ea,
+  200: #b0a4dd,
+  300: #907fd0,
+  400: #7763c5, // Primary color
+  500: #5e49bb,
+  600: #5444b4,
+  700: #473cab,
+  800: #3a36a2,
+  900: #242b94,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+$my-accent-palette: (
+  50: #ebe7f8,
+  100: #ccc5ed,
+  200: #ab9fe2,
+  300: #8879d8,
+  400: #6b5ccf, // Accent color
+  500: #4c41c6,
+  600: #413dc0,
+  700: #2f35b7,
+  800: #182faf,
+  900: #0024a1,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+$my-warn-palette: (
+  50: #FDE9EC,
+  100: #F9C9CC,
+  200: #E59391,
+  300: #D76A67,
+  400: #DE4943,
+  500: #DF3827,
+  600: #D12E27,
+  700: #C02322,
+  800: #B31C1B,
+  900: #A40F0F, // Warn color
+  A100: #DF3827,
+  A200: #DF3827,
+  A400: #DF3827,
+  A700: #DF3827,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: black,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
+// Define colors
+$my-primary: mat.define-palette($my-primary-palette, 400);
+//$my-accent: mat.define-palette($my-gray-palette);
+$my-accent: mat.define-palette($my-accent-palette, 400);
+$my-warn: mat.define-palette($my-warn-palette, 900);
+
+// Typography configuration
+$my-typography: mat.define-typography-config(
+  $font-family: 'Inter',
+  $headline-6: mat.define-typography-level(24px, 30px, 700), //h2
+  $subtitle-1: mat.define-typography-level(16px, 20px, 700), //h3
+);
+@include mat.typography-hierarchy($my-typography);
+
+// Define theme
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  ),
+  typography: $my-typography
+));
+
+$primary-color: mat.get-theme-color($my-theme, primary);
+$accent-color: mat.get-theme-color($my-theme, accent);
+$warn-color: mat.get-theme-color($my-theme, warn);
+
+// Apply the theme to all components
+@include mat.all-component-themes($my-theme);
+
+:root {
+  --primary-color: #{$primary-color};
+  --accent-color: #{$accent-color};
+  --warn-color: #{$warn-color};
+  --gray-50: #F5F5F5; // Background of theme and article cards
+  --gray-100: #EEEEEE; // Background of comment
+  --gray-200: #D9D9D9; // User avatar background
+  --gray-700: #939393; // Placeholder text
+  --header-height: 6rem;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+header, main {
+  padding-inline: 1rem;
+}
+
+header {
+  height: var(--header-height);
+  border-bottom: 1px solid black;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: calc(100vh - var(--header-height));
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.line-clamp {
+  --lineclamp: 3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--lineclamp);
+}
+
+.line-clamp-5 {
+  --lineclamp: 5;
+}
+
+//Inspiration: https://youtu.be/p3_xN2Zp1TY?si=BTdcz5FLdSmwwzZg&t=163
+.auto-grid {
+  --min-column-size: 17rem;
+  --minmax-min: min(var(--min-column-size), 100%);
+  --minmax-max: 1fr;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--minmax-min), var(--minmax-max)));
+  align-items: stretch;
+  align-content: stretch;
+  gap: 1rem;
+}
+
+.flex {
+  --direction: row;
+  display: flex;
+  gap: 1rem;
+  flex-direction: var(--direction);
+  justify-content: space-between;
+}
+
+.flex-col {
+  --direction: column;
+}
+
+mat-card.card {
+  background-color: var(--gray-50);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}

@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Theme} from "../../interfaces/theme";
 import {ThemeService} from "../../services/theme.service";
+import { Subscription} from "rxjs";
 
 @Component({
   selector: 'app-themes',
   templateUrl: './list.component.html',
-  host: { class: 'auto-grid' },
-  styles: [".actions button { margin: 0.5rem auto; padding-inline: 3rem;}"],
+  styleUrls: ['./list.component.scss'],
 })
 
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
   themes: Theme[] = [];
+  isLoading = true;
+  themesSubscription: Subscription | null = null;
 
   constructor(private themeService: ThemeService) { }
 
@@ -19,8 +21,17 @@ export class ListComponent implements OnInit {
   }
 
   getThemes(): void {
-    this.themeService.getThemes().subscribe((themes) => {
+    this.isLoading = true;
+    this.themesSubscription = this.themeService.getThemes()
+        .subscribe((themes) => {
       this.themes = themes;
+      this.isLoading = false;
     });
+  }
+
+  ngOnDestroy(): void {
+    if(this.themesSubscription){
+      this.themesSubscription.unsubscribe();
+    }
   }
 }

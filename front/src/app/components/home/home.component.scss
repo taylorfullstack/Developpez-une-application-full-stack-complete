@@ -1,11 +1,14 @@
-.center {
-  display: flex;
-  justify-content: center;
+main {
+  --justify: center;
   align-items: center;
-  flex-direction: column;
 }
 
 mat-card-actions {
-  display: flex;
-  gap: 4rem;
+ --gap: 4rem;
+}
+
+@media (width < 599px) {
+  mat-card-actions {
+    --direction: column;
+  }
 }

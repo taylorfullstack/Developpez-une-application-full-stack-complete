@@ -1,0 +1,54 @@
+<main class=" grid-template-layout">
+    <a routerLink="/articles" class="return-link">
+      <mat-icon aria-hidden="false" aria-label="retour" fontIcon="arrow_back"></mat-icon>
+    </a>
+  <p *ngIf="!article">Article non trouvé</p>
+
+  <article *ngIf="article"  class="flex flex-col">
+      <section>
+        <h2 class="mat-h2">{{ article.title }}</h2>
+        <header class="flex justify-start justify-start wrap subtitle">
+          <time [dateTime]="article.created_at | date:'yyyy-MM-dd' ">{{ article.created_at | date:'mediumDate' }}</time>
+          <address>{{ article.authorName }}</address>
+          <span>{{ article.themeTitle }}</span>
+        </header>
+      <p>{{ article.content }}</p>
+      </section>
+
+      <mat-divider></mat-divider>
+
+      <section class="flex-1 grow">
+        <h3>Commentaires</h3>
+
+        <article *ngFor="let comment of article?.comments" class="flex">
+          <p>{{comment.authorName}}</p>
+          <p>{{ comment.content }}</p>
+        </article>
+      </section>
+  </article>
+
+  <form *ngIf="article" class="flex">
+    <mat-form-field appearance="outline" class="flex-1">
+      <mat-label>Écrivez ici votre commentaire</mat-label>
+      <textarea matInput rows="2"></textarea>
+      <button
+        type="submit"
+        matSuffix
+        style="background-color: transparent;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 width: 50px;
+                 height: 50px;
+                 border: none;">
+        <mat-icon aria-hidden="false" aria-label="envoyer" fontIcon="send" color="primary"
+                  style="font-size: 40px;
+                       width: 40px;
+                       height: 40px;
+                       padding: 0;
+                       transform: rotate(-45deg);">
+        </mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</main>

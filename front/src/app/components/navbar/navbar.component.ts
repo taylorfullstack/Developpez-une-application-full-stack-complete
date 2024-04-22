@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {SidebarService} from '../../services/sidebar.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+  constructor(private sidebarService: SidebarService) {}
 
+  public toggleSidebar() {
+    this.sidebarService.toggleSidebar();
+  }
 }

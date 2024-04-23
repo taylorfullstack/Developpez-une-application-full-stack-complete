@@ -39,7 +39,7 @@ CREATE TABLE COMMENTS (
 );
 
 -- Inserting user
-INSERT INTO USERS(name, email, password) VALUES ('Heather Taylor', 'ht@mdd.com', 'pass1234');
+INSERT INTO USERS(name, email, password) VALUES ('MDD User', 'user@mdd.com', 'pass1234');
 
 -- Inserting themes
 INSERT INTO THEMES(title, description) VALUES ('Elixir', 'Elixir is a dynamic, functional language designed for building scalable and maintainable applications.');

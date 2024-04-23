@@ -1,13 +1,20 @@
-@for (theme of themes; track theme.id) {
-  <mat-card class="card">
-    <mat-card-header>
-      <mat-card-title class="mat-h3">{{ theme.title }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p class="line-clamp">{{ theme.description }}</p>
-    </mat-card-content>
-    <mat-card-actions class="actions">
-      <button mat-raised-button color="primary">S'abonner</button>
-    </mat-card-actions>
-  </mat-card>
-}
+<main class="auto-grid">
+  @if (isLoading) {
+    <mat-spinner></mat-spinner>
+  }
+  @if (!isLoading) {
+    @for (theme of themes; track theme.id) {
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title class="mat-h3">{{ theme.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="line-clamp">{{ theme.description }}</p>
+        </mat-card-content>
+        <mat-card-actions class="actions">
+          <button mat-raised-button color="primary">S'abonner</button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  }
+</main>

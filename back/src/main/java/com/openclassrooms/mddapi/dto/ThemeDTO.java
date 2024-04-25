@@ -14,5 +14,5 @@ public class ThemeDTO {
     private String description;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-    private List<Long> articleIds;
+//    private List<Long> articleIds;
 }

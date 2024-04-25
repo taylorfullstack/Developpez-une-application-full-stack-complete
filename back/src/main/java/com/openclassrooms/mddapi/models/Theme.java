@@ -31,8 +31,8 @@ public class Theme {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "theme")
-    private List<Article> articles = new ArrayList<>();
+//    @OneToMany(mappedBy = "theme")
+//    private List<Article> articles = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime created_at;

@@ -26,6 +26,9 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatNavList} from "@angular/material/list";
 import {MatDivider} from "@angular/material/divider";
+import {LoginComponent} from "./features/auth/login/login.component";
+import {RegisterComponent} from "./features/auth/register/register.component";
+import {MeComponent} from "./features/me/components/me/me.component";
 
 
 registerLocaleData(localeFr, 'fr');
@@ -38,7 +41,10 @@ registerLocaleData(localeFr, 'fr');
     ArticleDetailComponent,
     ArticleListComponent,
     ArticleFormComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoginComponent,
+    RegisterComponent,
+    MeComponent
   ],
   imports: [
     BrowserModule,

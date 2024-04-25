@@ -62,6 +62,8 @@ export class FormComponent implements OnInit, OnDestroy {
         content: this.formControls['content'].value
       };
 
+      //TODO post article to backend
+
     }
     this.formControls['theme'].reset();
     this.formControls['title'].reset();

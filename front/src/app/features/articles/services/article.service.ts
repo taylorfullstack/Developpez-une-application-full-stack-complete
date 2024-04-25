@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Article } from "../interfaces/article";
 import { tap } from 'rxjs/operators';
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
 
-  private apiUrl = 'http://localhost:8080/articles';
+  private apiUrl: string = environment.apiUrl + '/articles';
   private articles: Article[] | null = null;
 
   constructor(private http: HttpClient) { }

@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from "../interfaces/user";
-import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
   private apiUrl: string = environment.apiUrl + '/me';
-  private User: User | null = null;
 
   constructor(private http: HttpClient) { }
 
-  // subscribeToTheme(id: number): Observable<User[]> {
-  //   //TODO: Implement this method
-  // }
-  //
-  // unsubscribeFromTheme(id: number): Observable<User[]> {
-  //   //TODO: Implement this method
-  // }
+  public getUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}`)
+  }
+
+  public updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}`, user);
+  }
+
+  public subscribeToTheme(themeId: number): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/themes/${themeId}`, {});
+  }
+
+  public unsubscribeFromTheme(themeId: number): Observable<User> {
+    return this.http.delete<User>(`${this.apiUrl}/themes/${themeId}`);
+  }
 }

@@ -7,9 +7,9 @@
     <h2>Se connecter</h2>
 
     <mat-form-field appearance="outline">
-      <mat-label>{{labels['email']}}</mat-label>
-      <input matInput [formControl]="formControls['email']" (blur)="onBlur('email')">
-      <mat-error *ngIf="formControls['email'].invalid && formControls['email'].touched">{{errorMessages['email']}}</mat-error>
+      <mat-label>{{labels['emailOrUsername']}}</mat-label>
+      <input matInput [formControl]="formControls['emailOrUsername']" (blur)="onBlur('emailOrUsername')">
+      <mat-error *ngIf="formControls['emailOrUsername'].invalid && formControls['emailOrUsername'].touched">{{errorMessages['emailOrUsername']}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -18,6 +18,6 @@
       <mat-error *ngIf="formControls['password'].invalid && formControls['password'].touched">{{errorMessages['password']}}</mat-error>
     </mat-form-field>
 
-    <button type="submit" [disabled]="formControls['email'].invalid || formControls['password'].invalid" mat-raised-button color="primary">Se connecter</button>
+    <button type="submit" [disabled]="formControls['emailOrUsername'].invalid || formControls['password'].invalid" mat-raised-button color="primary">Se connecter</button>
   </form>
 </main>

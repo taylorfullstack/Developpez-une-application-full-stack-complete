@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
+import {Router, UrlTree} from "@angular/router";
 import { SessionService } from "../services/session.service";
-import {  Observable } from "rxjs";
+import { Observable } from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable({ providedIn: 'root' })
 export class UnauthGuard {
@@ -10,13 +11,14 @@ export class UnauthGuard {
     private sessionService: SessionService,
   ) { }
 
-  public canActivate(): boolean {
-    if (!this.sessionService.isLogged) {
-      this.router.navigateByUrl('/articles').then(
-        () => console.log('Success: Redirected to /articles')
-      );
-      return false;
-    }
-    return true;
+  public canActivate(): Observable<boolean | UrlTree> {
+    return this.sessionService.isLoggedIn$.pipe(
+      map(isLoggedIn => {
+        if (isLoggedIn) {
+          return this.router.parseUrl('/articles');
+        }
+        return !isLoggedIn;
+      })
+    );
   }
 }

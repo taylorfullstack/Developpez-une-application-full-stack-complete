@@ -1,63 +1,79 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, firstValueFrom, Observable} from 'rxjs';
+import { User } from '../../me/interfaces/user';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import {User} from "../../me/interfaces/user";
+import { ThemeService } from '../../themes/services/theme.service';
+import { Theme } from '../../themes/interfaces/theme';
+import { UserService } from '../../me/services/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
+  private _user: BehaviorSubject<User | null > = new BehaviorSubject<User | null>(null);
+  public user$: Observable<User | null> = this._user.asObservable();
 
-  public isLogged: boolean = false;
-  public user: User | undefined;
+  private _subscribedThemes:BehaviorSubject<Theme[]> = new BehaviorSubject<Theme[]>([]);
+  public subscribedThemes$: Observable<Theme[]> = this._subscribedThemes.asObservable();
 
-  private isLoggedSubject = new BehaviorSubject<boolean>(this.isLogged);
+  private _isLoggedSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isLoggedIn$: Observable<any> = this._isLoggedSubject$.asObservable();
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private userService: UserService,
+              private themeService: ThemeService) {
     this.initializeUser();
-  }
-
-  public $isLogged(): Observable<boolean> {
-    return this.isLoggedSubject.asObservable();
   }
 
   public logIn(token: string): void {
     localStorage.setItem('token', token);
-    this.isLogged = true;
-    this.isLoggedSubject.next(this.isLogged);
+    this._isLoggedSubject$.next(true);
     this.initializeUser();
   }
 
   public logOut(): void {
     localStorage.removeItem('token');
-    this.user = undefined;
-    this.isLogged = false;
-    this.next();
+    this._user.next(null);
+    this._isLoggedSubject$.next(false);
+    this._subscribedThemes.next([]); // Clear subscribed themes
   }
 
-  private next(): void {
-    this.isLoggedSubject.next(this.isLogged);
+  public updateUser(updatedUser: User): void {
+    this._user.next(updatedUser);
+    this.themeService.getThemes().subscribe(themes => {
+      const subscribedThemes = themes.filter(theme => updatedUser.subscribedThemeIds.includes(theme.id));
+      this._subscribedThemes.next(subscribedThemes);
+    });
   }
 
-
-  private initializeUser(): void {
+  public async initializeUser(): Promise<void> {
     const token = localStorage.getItem('token');
     if (token) {
-      this.authService.getUser().subscribe({
-        next: (user) => {
-          this.user = user;
-          this.isLogged = true;
-          this.isLoggedSubject.next(this.isLogged);
-        },
-        error: (error) => {
-          // If an error occurs when fetching the user, check the error status
-          if (error.status === 401) {
-            // If the status is 401 Unauthorized, remove the token from local storage
-            localStorage.removeItem('token');
+      try {
+        const user = await firstValueFrom(this.userService.getUser().pipe(
+          catchError(error => {
+            if (error.status === 401) {
+              localStorage.removeItem('token');
+              this._isLoggedSubject$.next(false);
+            }
+            throw error;
+          })
+        ));
+
+        if (user) {
+          this._user.next(user);
+          const themes: Theme[] = await firstValueFrom(this.themeService.getThemes());
+          if (themes) {
+            const subscribedThemes: Theme[] = themes.filter(theme => user.subscribedThemeIds.includes(theme.id));
+            console.log(subscribedThemes);
+            this._subscribedThemes.next(subscribedThemes);
           }
-          console.error('Error fetching user:', error);
+          this._isLoggedSubject$.next(true);
         }
-      });
+      } catch (error) {
+        throw error;
+      }
     }
   }
 }

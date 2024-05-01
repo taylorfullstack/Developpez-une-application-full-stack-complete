@@ -1,23 +1,23 @@
 import {Component, ViewChild, AfterViewInit} from '@angular/core';
 import {MatSidenav} from "@angular/material/sidenav";
-import {SidebarService} from "./services/sidebar.service";
+import {SidebarService} from "../../services/sidebar.service";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: './auth.layout.component.html',
+  styleUrls: ['./auth.layout.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AuthLayoutComponent implements AfterViewInit {
   title: string = "MDD"
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   constructor(private sidebarService: SidebarService) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit():void {
     this.sidebarService.setSidenav(this.sidenav);
   }
 
-  public closeSidebar() {
+  public closeSidebar():void {
     this.sidebarService.closeSidebar();
   }
 

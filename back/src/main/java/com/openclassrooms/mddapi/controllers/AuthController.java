@@ -12,15 +12,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final JWTService jwtService;
     private final UserService userService;
 
@@ -29,42 +27,31 @@ public class AuthController {
         this.userService = userService;
     }
 
-    //TODO add register method back once login issue is resolved
-
-//    @PostMapping("/register")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterDTO registerDTO) {
-//        userService.registerNewUser(registerDTO);
-//        LoginDTO loginDTO = new LoginDTO();
-//        loginDTO.setEmail(registerDTO.getEmail());
-//        loginDTO.setPassword(registerDTO.getPassword());
-//        Authentication authentication = userService.authenticate(loginDTO);
-//        String token = jwtService.generateToken(authentication);
-//        return ResponseEntity.ok(Collections.singletonMap("token", token));
-//    }
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+        try {
+            UserDTO userDTO = userService.registerNewUser(registerDTO);
+            return ResponseEntity.ok(userDTO);
+        } catch (IllegalArgumentException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
         try {
-            logger.info("Attempting to login user: {}", loginDTO.getEmail()); // Log statement
             Authentication authentication = userService.authenticate(loginDTO);
             String token = jwtService.generateToken(authentication);
             return ResponseEntity.ok(Collections.singletonMap("token", token));
         } catch (AuthenticationException e) {
-            logger.error("Failed to authenticate user: {}", loginDTO.getEmail(), e); // Log statement
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-    }
-
-    @GetMapping("/me")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
-        UserDTO userDTO = userService.getCurrentUser(authentication);
-        return ResponseEntity.ok(userDTO);
     }
 
 }

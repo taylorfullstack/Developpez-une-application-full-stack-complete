@@ -5,7 +5,6 @@ import {Observable} from "rxjs";
 import {RegisterRequest} from "../interfaces/register.request";
 import {LoginRequest} from "../interfaces/login.request";
 import {AuthSuccess} from "../interfaces/auth.success";
-import {User} from "../../me/interfaces/user";
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +20,5 @@ export class AuthService {
 
   public login(loginRequest: LoginRequest): Observable<AuthSuccess> {
     return this.http.post<AuthSuccess>(`${this.apiUrl}/login`, loginRequest);
-  }
-
-  public getUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/me`);
   }
 }

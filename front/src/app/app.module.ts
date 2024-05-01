@@ -1,5 +1,7 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
+import {NgModule, LOCALE_ID, ErrorHandler} from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './features/auth/interceptors/jwt.interceptor';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import localeFr from '@angular/common/locales/fr';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +9,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AuthLayoutComponent } from './components/auth.layout/auth.layout.component';
+import {AppComponent} from "./app.component";
 import { HomeComponent } from './components/home/home.component';
 import {ListComponent as ThemeListComponent} from "./features/themes/components/list/list.component";
 import {ListComponent as ArticleListComponent} from "./features/articles/components/list/list.component";
@@ -29,6 +32,7 @@ import {MatDivider} from "@angular/material/divider";
 import {LoginComponent} from "./features/auth/login/login.component";
 import {RegisterComponent} from "./features/auth/register/register.component";
 import {MeComponent} from "./features/me/components/me/me.component";
+import {GlobalErrorHandler} from "./services/globalerrorhandler.service";
 
 
 registerLocaleData(localeFr, 'fr');
@@ -36,6 +40,7 @@ registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,
+    AuthLayoutComponent,
     HomeComponent,
     ThemeListComponent,
     ArticleDetailComponent,
@@ -69,7 +74,9 @@ registerLocaleData(localeFr, 'fr');
     MatDivider
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr' }
+    { provide: LOCALE_ID, useValue: 'fr'},
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ],
   bootstrap: [AppComponent],
 })

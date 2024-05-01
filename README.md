@@ -48,6 +48,8 @@ cd back
 
 Important Note: Replace `mysql_username` with your actual MySQL username.
 
+[Use this script](https://github.com/taylorfullstack/Developpez-une-application-full-stack-complete/blob/main/back/src/main/resources/sql/mdd.sql) to create the tables for the database.
+
 ### 4. Update the application.properties file
 
   You need to update the application properties file with the correct server, database, and security variables.

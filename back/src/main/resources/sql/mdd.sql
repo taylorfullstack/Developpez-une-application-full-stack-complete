@@ -1,6 +1,6 @@
 CREATE TABLE USERS (
                        id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                       name VARCHAR(255) NOT NULL,
+                       username VARCHAR(255) NOT NULL,
                        email VARCHAR(255) NOT NULL,
                        password VARCHAR(255) NOT NULL,
                        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -39,7 +39,7 @@ CREATE TABLE COMMENTS (
 );
 
 -- Inserting user
-INSERT INTO USERS(name, email, password) VALUES ('MDD User', 'user@mdd.com', 'pass1234');
+INSERT INTO USERS(username, email, password) VALUES ('mddadmin', 'admin@mdd.com', 'Mdd@123!');
 
 -- Inserting themes
 INSERT INTO THEMES(title, description) VALUES ('Elixir', 'Elixir is a dynamic, functional language designed for building scalable and maintainable applications.');

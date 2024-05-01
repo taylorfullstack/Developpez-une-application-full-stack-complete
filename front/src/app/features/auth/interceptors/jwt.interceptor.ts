@@ -1,5 +1,6 @@
-import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import {HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import {throwError} from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class JwtInterceptor implements HttpInterceptor {
@@ -22,8 +23,9 @@ export class JwtInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${token}`,
         },
       });
+      return next.handle(request);
+    } else {
+      return throwError(() => new HttpErrorResponse({ status: 401, statusText: 'Veuillez vous connecter' }));
     }
-
-    return next.handle(request);
   }
 }

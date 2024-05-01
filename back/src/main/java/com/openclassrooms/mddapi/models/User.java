@@ -26,7 +26,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String username;
 
     @Column(nullable = false)
     private String email;
@@ -34,7 +34,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> subscribedThemeIds = new ArrayList<>();
 
     @CreationTimestamp

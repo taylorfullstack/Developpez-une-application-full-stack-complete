@@ -1,15 +1,16 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ArticleService} from "../../services/article.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ArticleService } from "../../services/article.service";
 import { ActivatedRoute, Router } from '@angular/router';
-import {Article} from "../../interfaces/article";
-import {Subscription} from "rxjs";
+import { Article } from "../../interfaces/article";
+import { Subscription } from "rxjs";
+import { SessionService } from '../../../auth/services/session.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-themes',
+  selector: 'app-articles',
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+  styleUrls: ['./list.component.scss']
 })
-
 export class ListComponent implements OnInit, OnDestroy {
   sortBy: string | null = null;
   sortDirection: string | null = null;
@@ -24,19 +25,23 @@ export class ListComponent implements OnInit, OnDestroy {
   constructor(
     private articleService: ArticleService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sessionService: SessionService
   ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.sortBy = params['sort'];
       this.sortDirection = params['direction'];
-      if(!this.sortBy || !this.sortDirection) {
+      if (!this.sortBy || !this.sortDirection) {
         this.changeSortOrder('date', 'desc');
       }
     });
 
-    this.articleSubscription = this.articleService.getArticles().subscribe(articles => {
+    this.articleSubscription = this.sessionService.subscribedThemes$.pipe(
+      switchMap(themes => this.articleService.getArticlesForThemes(themes.map(theme => theme.id))),
+      switchMap(() => this.articleService.articles$)
+    ).subscribe(articles => {
       this.articles = articles;
     });
   }
@@ -62,5 +67,4 @@ export class ListComponent implements OnInit, OnDestroy {
       this.articleSubscription.unsubscribe();
     }
   }
-
 }

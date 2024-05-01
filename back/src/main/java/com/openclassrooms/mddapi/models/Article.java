@@ -31,16 +31,14 @@ public class Article {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "theme_id", nullable = false)
-    private Theme theme;
+    @Column(name = "theme_id", nullable = false)
+    private Long themeId;
 
-    @OneToMany(mappedBy = "article")
-    private List<Comment> comments = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> commentIds = new ArrayList<>(); //Comment
 
     @CreationTimestamp
     private LocalDateTime created_at;

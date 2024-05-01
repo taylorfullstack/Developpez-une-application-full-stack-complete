@@ -5,6 +5,7 @@ import { Theme } from "../../../themes/interfaces/theme";
 import {ArticleService} from "../../services/article.service";
 import {Subscription} from "rxjs";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {Article} from "../../interfaces/article";
 
 @Component({
   selector: 'app-form',
@@ -45,28 +46,38 @@ export class FormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.themeSubscription = this.themeService.getThemes().subscribe(themes => {
       this.themes = themes;
+      console.log("themes:", themes); //TODO remove log
     });
   }
 
-  onBlur(controlName: string) {
+  onBlur(controlName: string):void {
     const control = this.formControls[controlName];
     control.markAsTouched();
     this.errorMessages[controlName] = control.hasError('required') ? `Veuillez saisir ${this.controlNames[controlName]}` : '';
   }
-
-  onSubmit() {
+  onSubmit(): void {
     if (this.formControls['theme'].valid && this.formControls['title'].valid && this.formControls['content'].valid) {
-      const newArticle = {
+      const newArticle: Pick<Article, 'title' | 'content' | 'themeId'> = {
         themeId: this.formControls['theme'].value,
         title: this.formControls['title'].value,
         content: this.formControls['content'].value
       };
 
+      this.articleSubscription = this.articleService.createArticle(newArticle).subscribe({
+        next: () => {
+          this.snackBar.open('Article créé avec succès', 'Fermer', {
+            duration: 3000,
+          });
+          Object.values(this.formControls).forEach(control => {
+            control.reset();
+            control.setErrors(null);
+          });
+        },
+        error: error => {
+          throw error;
+        }
+      });
     }
-    this.formControls['theme'].reset();
-    this.formControls['title'].reset();
-    this.formControls['content'].reset();
-
   }
 
   ngOnDestroy(): void {

@@ -9,7 +9,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class UserDTO {
     private Long id;
-    private String name;
+    private String username;
     private String email;
     private List<Long> subscribedThemeIds;
     private LocalDateTime created_at;

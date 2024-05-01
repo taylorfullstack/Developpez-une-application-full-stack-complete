@@ -26,13 +26,11 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User commenter;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false)
-    private Article article;
+    @Column(name = "article_id", nullable = false)
+    private Long articleId;
 
     @CreationTimestamp
     private LocalDateTime created_at;

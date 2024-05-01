@@ -214,7 +214,7 @@ img {
 /* Grid utilities */
 //Inspiration for auto-grid from Kevin Powell : https://youtu.be/p3_xN2Zp1TY?si=BTdcz5FLdSmwwzZg&t=163
 .auto-grid {
-  --min-column-size: 17rem;
+  --min-column-size: 20rem;
   --minmax-min: min(var(--min-column-size), 100%);
   --minmax-max: 1fr;
   display: grid;
@@ -286,11 +286,12 @@ img {
 /* Customized Material UI */
 
 mat-card.card {
+  --flex-direction: column;
+  --justify-content: space-between;
   background-color: var(--gray-50);
-  min-height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: var(--flex-direction);
+  justify-content: var(--justify-content);
 }
 
 mat-card-subtitle, .subtitle{
@@ -310,21 +311,21 @@ mat-divider {
     min-height: 100%;
     padding: var(--padding-page);
   }
-
-.return-link {
-  grid-area: back-button;
-  position: sticky;
-  display: grid;
-  place-content: center;
-  justify-self: center;
-  top: 0;
-  left: 0;
-  padding-top: 1rem;
-  width: 1rem;
-  height: 1rem;
 }
 
- .return-link:hover {
-   color: var(--primary-color);
- }
-}
+  .return-link {
+    grid-area: back-button;
+    position: sticky;
+    display: grid;
+    place-content: center;
+    justify-content: center;
+    justify-self: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+  }
+
+  .return-link:hover {
+    color: var(--primary-color);
+  }

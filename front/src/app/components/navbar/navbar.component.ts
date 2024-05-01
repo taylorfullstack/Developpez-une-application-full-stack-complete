@@ -9,7 +9,7 @@ import {SidebarService} from '../../services/sidebar.service';
 export class NavbarComponent {
   constructor(private sidebarService: SidebarService) {}
 
-  public toggleSidebar() {
+  public toggleSidebar():void {
     this.sidebarService.toggleSidebar();
   }
 }

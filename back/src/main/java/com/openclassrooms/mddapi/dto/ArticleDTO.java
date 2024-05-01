@@ -12,8 +12,8 @@ public class ArticleDTO {
     private Long id;
     private String title;
     private String content;
-    private String authorName;
-    private Long authorId;
+    private String username;
+    private Long userId;
     private String themeTitle;
     private Long themeId;
     private List<Long> commentIds;

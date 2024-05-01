@@ -2,11 +2,11 @@ export interface Article {
   id: number;
   title: string;
   content: string;
-  authorName: string;
-  authorId: number;
+  username: string;
+  userId: number;
   themeTitle: string;
   themeId: number;
-  comments: Comment[];
+  commentIds: number[];
   created_at: Date;
   updated_at: Date;
 }
@@ -14,8 +14,8 @@ export interface Article {
 export interface Comment {
   id: number;
   content: string;
-  authorName: string;
-  authorId: number;
+  userId: number;
+  username: string;
   articleId: number;
   created_at: Date;
   updated_at: Date;

@@ -24,8 +24,7 @@
 
     <mat-form-field appearance="outline" >
       <mat-label>{{labels['content']}}</mat-label>
-      <textarea rows="5" matInput [formControl]="formControls['content']" (blur)="onBlur('content')" >
-    </textarea>
+      <textarea rows="5" matInput [formControl]="formControls['content']" (blur)="onBlur('content')" ></textarea>
       <mat-error *ngIf="formControls['content'].invalid && formControls['content'].touched">{{errorMessages['content']}}</mat-error>
     </mat-form-field>
 
